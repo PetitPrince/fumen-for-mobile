@@ -231,7 +231,10 @@ const ScreenField = (state: State, actions: Actions, layout: EditorLayout) => {
                     move: page !== undefined ? page.piece : undefined,
                     existInferences: 0 < state.events.inferences.length,
                     pages: state.fumen.pages,
-                    flags: page.flags,
+                    flags: {
+                        ...page.flags,
+                        syncWithEditor: state.controllerDisplay.syncWithEditor,
+                    },
                     touchType: state.mode.touch,
                     currentIndex: state.fumen.currentIndex,
                 });
@@ -363,19 +366,21 @@ export const getComment = (state: State, actions: Actions, layout: EditorLayout)
         const isCommentKey = resources.comment !== undefined
             || (currentPage !== undefined && currentPage.comment.text !== undefined);
 
-        return comment({
-            currentIndex,
-            actions,
-            key: `text-comment-editor-${state.comment.changeKey}`,
-            dataTest: 'text-comment',
-            id: 'text-comment',
-            textColor: isCommentKey ? '#333' : '#757575',
-            backgroundColorClass: 'white',
-            height: layout.comment.size.height,
-            text: resources.comment !== undefined ? resources.comment.text : state.comment.text,
-            placeholder: 'comment',
-            readonly: false,
-        });
+        return div({}, [
+            comment({
+                currentIndex,
+                actions,
+                key: `text-comment-editor-${state.comment.changeKey}`,
+                dataTest: 'text-comment',
+                id: 'text-comment',
+                textColor: isCommentKey ? '#333' : '#757575',
+                backgroundColorClass: 'white',
+                height: layout.comment.size.height,
+                text: resources.comment !== undefined ? resources.comment.text : state.comment.text,
+                placeholder: 'comment',
+                readonly: false,
+            }),
+        ]);
     }
     case CommentType.Readonly: {
         const currentIndex = state.fumen.currentIndex;
@@ -383,18 +388,20 @@ export const getComment = (state: State, actions: Actions, layout: EditorLayout)
         const isCommentKey = resources.comment !== undefined
             || (currentPage !== undefined && currentPage.comment.text !== undefined);
 
-        return comment({
-            currentIndex,
-            actions,
-            key: `text-comment-editor-readonly-${state.comment.changeKey}`,
-            dataTest: 'text-comment',
-            id: 'text-comment',
-            textColor: isCommentKey ? '#333' : '#757575',
-            backgroundColorClass: 'white',
-            height: layout.comment.size.height,
-            text: resources.comment !== undefined ? resources.comment.text : state.comment.text,
-            readonly: true,
-        });
+        return div({}, [
+            comment({
+                currentIndex,
+                actions,
+                key: `text-comment-editor-readonly-${state.comment.changeKey}`,
+                dataTest: 'text-comment',
+                id: 'text-comment',
+                textColor: isCommentKey ? '#333' : '#757575',
+                backgroundColorClass: 'white',
+                height: layout.comment.size.height,
+                text: resources.comment !== undefined ? resources.comment.text : state.comment.text,
+                readonly: true,
+            }),
+        ]);
     }
     case CommentType.PageSlider: {
         return page_slider({

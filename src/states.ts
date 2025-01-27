@@ -94,6 +94,9 @@ export interface State {
     };
     version: string;
     platform: Platforms;
+    controllerDisplay: {
+        syncWithEditor: boolean;
+    };
 }
 
 export const initState: Readonly<State> = {
@@ -185,6 +188,9 @@ export const initState: Readonly<State> = {
     },
     version: VERSION,
     platform: getPlatform(),
+    controllerDisplay: {
+        syncWithEditor: false,
+    },
 };
 
 export const resources = {

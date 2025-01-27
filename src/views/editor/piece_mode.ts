@@ -23,6 +23,7 @@ export const pieceMode = ({ layout, currentIndex, touchType, move, pages, existI
     existInferences: boolean,
     flags: {
         lock: boolean;
+        syncWithEditor: boolean;
     },
     actions: {
         changeToDrawPieceMode: () => void;
@@ -39,6 +40,7 @@ export const pieceMode = ({ layout, currentIndex, touchType, move, pages, existI
         changeLockFlag: (data: { index: number, enable: boolean }) => void;
         openPage: (data: { index: number }) => void;
         insertPage: (data: { index: number }) => void;
+        setControllerDisplay: (data: { syncWithEditor: boolean }) => void;
     };
 }) => {
     const toolButtonMargin = 5;
@@ -72,6 +74,22 @@ export const pieceMode = ({ layout, currentIndex, touchType, move, pages, existI
             description: 'lock',
             iconSize: 22,
             enable: flags.lock,
+        })),
+        switchButton({
+            borderWidth: 1,
+            width: layout.buttons.size.width,
+            margin: toolButtonMargin,
+            backgroundColorClass: 'blue',
+            textColor: '#333',
+            borderColor: '#2196F3',
+            datatest: 'btn-controller-display-sync',
+            key: 'btn-controller-display-sync',
+            onclick: () => actions.setControllerDisplay({ syncWithEditor: !flags.syncWithEditor }),
+            enable: flags.syncWithEditor,
+        }, switchIconContents({
+            description: 'sync',
+            iconSize: 22,
+            enable: flags.syncWithEditor,
         })),
         dualButton({
             borderWidth: 1,

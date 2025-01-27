@@ -25,6 +25,28 @@ import { localStorageWrapper } from './memento';
 
 export type action = (state: Readonly<State>) => NextState;
 
+export type ControllerDisplayActions = {
+    toggleControllerDisplay: () => void;
+    setControllerDisplay: (data: { syncWithEditor: boolean }) => void;
+};
+
+export const controllerDisplayActions: ControllerDisplayActions = {
+    toggleControllerDisplay: () => (state: State) => ({
+        ...state,
+        controllerDisplay: {
+            ...state.controllerDisplay,
+            syncWithEditor: !state.controllerDisplay.syncWithEditor,
+        },
+    }),
+    setControllerDisplay: ({ syncWithEditor }) => (state:State) => ({
+        ...state,
+        controllerDisplay: {
+            ...state.controllerDisplay,
+            syncWithEditor,
+        },
+    }),
+};
+
 export type Actions = AnimationActions
     & ScreenActions
     & ModalActions
@@ -35,7 +57,8 @@ export type Actions = AnimationActions
     & FieldEditorActions
     & CommentActions
     & ConvertActions
-    & UserSettingsActions;
+    & UserSettingsActions
+    & ControllerDisplayActions;
 
 export const actions: Readonly<Actions> = {
     ...animationActions,
@@ -49,6 +72,7 @@ export const actions: Readonly<Actions> = {
     ...commentActions,
     ...convertActions,
     ...userSettingsActions,
+    ...controllerDisplayActions,
 };
 
 // Mounting

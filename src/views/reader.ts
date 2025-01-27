@@ -297,18 +297,20 @@ export const getComment = (state: State, actions: Actions, layout: ReaderLayout)
     }
     default: {
         const currentIndex = state.fumen.currentIndex;
-        return comment({
-            currentIndex,
-            actions,
-            key: `text-comment-reader-${state.comment.changeKey}`,
-            dataTest: 'text-comment',
-            id: 'text-comment',
-            textColor: state.comment.isChanged ? '#fff' : '#333',
-            backgroundColorClass: state.comment.text !== '' && state.comment.isChanged ? 'green darken-1' : 'white',
-            height: layout.comment.size.height,
-            text: state.comment.text,
-            readonly: true,
-        });
+        return div({}, [
+            comment({
+                currentIndex,
+                actions,
+                key: `text-comment-reader-${state.comment.changeKey}`,
+                dataTest: 'text-comment',
+                id: 'text-comment',
+                textColor: state.comment.isChanged ? '#fff' : '#333',
+                backgroundColorClass: state.comment.text !== '' && state.comment.isChanged ? 'green darken-1' : 'white',
+                height: layout.comment.size.height,
+                text: state.comment.text,
+                readonly: true,
+            }),
+        ]);
     }
     }
 };

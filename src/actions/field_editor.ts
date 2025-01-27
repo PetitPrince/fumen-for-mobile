@@ -284,6 +284,9 @@ export const fieldEditorActions: Readonly<FieldEditorActions> = {
                 y: element[1],
             },
         };
+        if (state.controllerDisplay.syncWithEditor) {
+            page.comment.text = updateCommentText(page.comment.text ?? '', 'rotateLeft');
+        }
 
         return sequence(state, [
             fieldEditorActions.resetInferencePiece(),
@@ -332,6 +335,9 @@ export const fieldEditorActions: Readonly<FieldEditorActions> = {
                 y: element[1],
             },
         };
+        if (state.controllerDisplay.syncWithEditor) {
+            page.comment.text = updateCommentText(page.comment.text ?? '', 'rotateRight');
+        }
 
         return sequence(state, [
             fieldEditorActions.resetInferencePiece(),
@@ -370,6 +376,9 @@ export const fieldEditorActions: Readonly<FieldEditorActions> = {
                 y: coordinate.y,
             },
         };
+        if (state.controllerDisplay.syncWithEditor) {
+            page.comment.text = updateCommentText(page.comment.text ?? '', 'moveLeft');
+        }
 
         return sequence(state, [
             fieldEditorActions.resetInferencePiece(),
@@ -413,6 +422,9 @@ export const fieldEditorActions: Readonly<FieldEditorActions> = {
                 y: coordinate.y,
             },
         };
+        if (state.controllerDisplay.syncWithEditor) {
+            page.comment.text = updateCommentText(page.comment.text ?? '', 'moveLeftEnd');
+        }
 
         return sequence(state, [
             fieldEditorActions.resetInferencePiece(),
@@ -451,6 +463,9 @@ export const fieldEditorActions: Readonly<FieldEditorActions> = {
                 y: coordinate.y,
             },
         };
+        if (state.controllerDisplay.syncWithEditor) {
+            page.comment.text = updateCommentText(page.comment.text ?? '', 'moveRight');
+        }
 
         return sequence(state, [
             fieldEditorActions.resetInferencePiece(),
@@ -494,6 +509,9 @@ export const fieldEditorActions: Readonly<FieldEditorActions> = {
                 y: coordinate.y,
             },
         };
+        if (state.controllerDisplay.syncWithEditor) {
+            page.comment.text = updateCommentText(page.comment.text ?? '', 'moveRightEnd');
+        }
 
         return sequence(state, [
             fieldEditorActions.resetInferencePiece(),
@@ -538,6 +556,9 @@ export const fieldEditorActions: Readonly<FieldEditorActions> = {
                 y: currentY,
             },
         };
+        if (state.controllerDisplay.syncWithEditor) {
+            page.comment.text = updateCommentText(page.comment.text ?? '', 'harddrop');
+        }
 
         return sequence(state, [
             fieldEditorActions.resetInferencePiece(),
@@ -558,4 +579,49 @@ const testCallback = (field: Field, piece: Piece, rotation: Rotation) => {
         const isConflicted = positions.map(toPositionIndex).some(i => field.getAtIndex(i, true) !== Piece.Empty);
         return !isConflicted;
     };
+};
+
+const encodeMove = (action: string) => {
+    switch (action) {
+        case 'rotateLeft':
+            return '[nnnnpnn]';
+        case 'rotateRight':
+            return '[nnnnnpn]';
+        case 'moveLeft':
+            return '[nnpnnnn]';
+        case 'moveRight':
+            return '[nnnpnnn]';
+        case 'moveLeftEnd':
+            return '[nnpnnnn]';
+        case 'moveRightEnd':
+            return '[nnpnnnn]';
+        case 'harddrop':
+            return '[pnnnnnn]';
+        default:
+            return '';
+    }
+};
+
+const updateCommentText = (comment: string, action: string) => {
+    const encodedMove = encodeMove(action);
+    const rotationPattern = /\[nnnnpnn\]|\[nnnnnpn\]/;
+    const movementPattern = /\[nnpnnnn\]|\[nnnpnnn\]|\[nnpnnnn\]|\[pnnnnnn\]/;
+
+    let newComment = comment;
+
+    if (rotationPattern.test(encodedMove)) {
+        if (rotationPattern.test(newComment)) {
+            newComment = newComment.replace(rotationPattern, encodedMove);
+        } else {
+            newComment = `${encodedMove} ${newComment}`;
+        }
+    } else if (movementPattern.test(encodedMove)) {
+        if (movementPattern.test(newComment)) {
+            newComment = newComment.replace(movementPattern, encodedMove);
+        } else {
+            newComment = `${encodedMove} ${newComment}`;
+        }
+    }
+
+    return newComment;
 };
