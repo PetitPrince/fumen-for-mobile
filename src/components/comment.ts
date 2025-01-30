@@ -59,22 +59,22 @@ const buttonStyleEditor = style({
 });
 const getButtonStyle = (state: 'n' | 'p' | 'h') => {
     switch (state) {
-        case 'p':
-            return style({ ...buttonStyle, backgroundColor: '#FF3B3B' });
-        case 'h':
-            return style({ ...buttonStyle, backgroundColor: '#FFA63B' });
-        default:
-            return buttonStyle;
+    case 'p':
+        return style({ ...buttonStyle, backgroundColor: '#FF3B3B' });
+    case 'h':
+        return style({ ...buttonStyle, backgroundColor: '#FFA63B' });
+    default:
+        return buttonStyle;
     }
 };
 const getButtonStyleForEditor = (state: 'n' | 'p' | 'h') => {
     switch (state) {
-        case 'p':
-            return style({ ...buttonStyleEditor, backgroundColor: '#FF3B3B' });
-        case 'h':
-            return style({ ...buttonStyleEditor, backgroundColor: '#FFA63B' });
-        default:
-            return buttonStyleEditor;
+    case 'p':
+        return style({ ...buttonStyleEditor, backgroundColor: '#FF3B3B' });
+    case 'h':
+        return style({ ...buttonStyleEditor, backgroundColor: '#FFA63B' });
+    default:
+        return buttonStyleEditor;
     }
 };
 const parseButtonState = (text: string): ButtonState => {
@@ -105,12 +105,12 @@ const parseButtonState = (text: string): ButtonState => {
 
 const cycleButtonState = (state: 'n' | 'p' | 'h'): 'n' | 'p' | 'h' => {
     switch (state) {
-        case 'n':
-            return 'p';
-        case 'p':
-            return 'h';
-        case 'h':
-            return 'n';
+    case 'n':
+        return 'p';
+    case 'p':
+        return 'h';
+    case 'h':
+        return 'n';
     }
 };
 
@@ -122,16 +122,19 @@ const isDirectionButton = (button: keyof ButtonState): boolean => {
     return ['up', 'down', 'left', 'right'].includes(button);
 };
 
-const handleButtonClick = (button: keyof ButtonState, buttonState: ButtonState, actions: Props['actions'], currentIndex: number) => {
-    let newState = { ...buttonState };
-    
+const handleButtonClick = (button: keyof ButtonState,
+                           buttonState: ButtonState,
+                           actions: Props['actions'],
+                           currentIndex: number) => {
+    const newState = { ...buttonState };
+
     if (isDirectionButton(button)) {
         // Reset all direction buttons
-        ['up', 'down', 'left', 'right'].forEach(dir => {
+        ['up', 'down', 'left', 'right'].forEach((dir) => {
             newState[dir as keyof ButtonState] = 'n';
         });
     }
-    
+
     newState[button] = cycleButtonState(buttonState[button]);
     const newText = updateControllerText(newState);
     actions.updateCommentText({ text: newText, pageIndex: currentIndex });
@@ -167,19 +170,33 @@ const renderControllerForEditor = (buttonState: ButtonState, actions: Props['act
     return div({ style: controllerStyle }, [
         div({ style: dpadStyle }, [
             div(),
-            div({ style: getButtonStyleForEditor(buttonState.up), onclick: () => handleButtonClick('up', buttonState, actions, currentIndex) }, '↑'),
+            div({ style: getButtonStyleForEditor(buttonState.up),
+                onclick: () => handleButtonClick('up', buttonState, actions, currentIndex) },
+                  '↑'),
             div(),
             div(),
             div(),
             div(),
-            div({ style: getButtonStyleForEditor(buttonState.left), onclick: () => handleButtonClick('left', buttonState, actions, currentIndex) }, '←'),
+            div({ style: getButtonStyleForEditor(buttonState.left),
+                onclick: () => handleButtonClick('left', buttonState, actions, currentIndex) },
+                '←'),
             div(),
-            div({ style: getButtonStyleForEditor(buttonState.right), onclick: () => handleButtonClick('right', buttonState, actions, currentIndex) }, '→'),
-            div({ style: getButtonStyleForEditor(buttonState.a), onclick: () => handleButtonClick('a', buttonState, actions, currentIndex) }, 'A'),
-            div({ style: getButtonStyleForEditor(buttonState.b), onclick: () => handleButtonClick('b', buttonState, actions, currentIndex) }, 'B'),
-            div({ style: getButtonStyleForEditor(buttonState.c), onclick: () => handleButtonClick('c', buttonState, actions, currentIndex) }, 'C'),
+            div({ style: getButtonStyleForEditor(buttonState.right),
+                onclick: () => handleButtonClick('right', buttonState, actions, currentIndex) },
+                '→'),
+            div({ style: getButtonStyleForEditor(buttonState.a),
+                onclick: () => handleButtonClick('a', buttonState, actions, currentIndex) },
+                'A'),
+            div({ style: getButtonStyleForEditor(buttonState.b),
+                onclick: () => handleButtonClick('b', buttonState, actions, currentIndex) },
+                'B'),
+            div({ style: getButtonStyleForEditor(buttonState.c),
+                onclick: () => handleButtonClick('c', buttonState, actions, currentIndex) },
+                'C'),
             div(),
-            div({ style: getButtonStyleForEditor(buttonState.down), onclick: () => handleButtonClick('down', buttonState, actions, currentIndex) }, '↓'),
+            div({ style: getButtonStyleForEditor(buttonState.down),
+                onclick: () => handleButtonClick('down', buttonState, actions, currentIndex) },
+                '↓'),
             div(),
             div(),
             div(),
@@ -273,7 +290,7 @@ export const comment: Component<Props> = (
     return div({
         style: style({
             width: '100%',
-            height: px(height*4),
+            height: px(height * 4),
             whiteSpace: 'nowrap',
         }),
     }, [
@@ -293,6 +310,6 @@ export const comment: Component<Props> = (
             type: 'text',
             className: backgroundColorClass,
             style: commentStyle,
-        })
+        }),
     ]);
 };

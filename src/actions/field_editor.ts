@@ -583,22 +583,22 @@ const testCallback = (field: Field, piece: Piece, rotation: Rotation) => {
 
 const encodeMove = (action: string) => {
     switch (action) {
-        case 'rotateLeft':
-            return '[nnnnpnn]';
-        case 'rotateRight':
-            return '[nnnnnpn]';
-        case 'moveLeft':
-            return '[nnpnnnn]';
-        case 'moveRight':
-            return '[nnnpnnn]';
-        case 'moveLeftEnd':
-            return '[nnpnnnn]';
-        case 'moveRightEnd':
-            return '[nnpnnnn]';
-        case 'harddrop':
-            return '[pnnnnnn]';
-        default:
-            return '';
+    case 'rotateLeft':
+        return '[nnnnpnn]';
+    case 'rotateRight':
+        return '[nnnnnpn]';
+    case 'moveLeft':
+        return '[nnpnnnn]';
+    case 'moveRight':
+        return '[nnnpnnn]';
+    case 'moveLeftEnd':
+        return '[nnpnnnn]';
+    case 'moveRightEnd':
+        return '[nnpnnnn]';
+    case 'harddrop':
+        return '[pnnnnnn]';
+    default:
+        return '';
     }
 };
 
